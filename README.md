@@ -46,7 +46,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-In the context of the master thesis, the use of reinforcement learning in inventory management in the retail sector was evaluated. This README file is intended to give an overview of the scripts used in the project and to provide the reader with instructions on how to execute the scripts independently. `project_description`
+In the context of the master thesis, the use of reinforcement learning in inventory management in the retail sector was evaluated. <br>
+This README file is intended to give an overview of the scripts used in the project and to provide the reader with instructions on how to execute the scripts independently.
+`project_description`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -78,23 +80,16 @@ The following libraries with their respective versions are used in this project:
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/benedictrau/Master-Thesis.git
    ```
-2Install the required packages
+2. Install the required packages
    ```sh
-   -package- install
+   pip install -package name-
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -104,9 +99,34 @@ This is an example of how to list things you need to use the software and how to
 <!-- Overview -->
 ## Overview of the Python scripts used
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+In the following, an overview of the scripts used in the project is given based on the folder structure. 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+### Predict Stock
+
+#### Generate the data to train the classification models
+This folder contains all scripts and files used to generate the belief state. 
+The file _**"Main_predict_stock_createCSV.py"**_ was used to generate the data for training the classification models.
+This script interacts with the reduced simulation model of the inventory system that can be found under the file name _**"Env_predict_stock.py"**_. <br>
+The generated .csv files are stored in the folder _**"Data"**_.
+<br><br>
+
+#### Classification models
+In total, the following three classification algorithms were tested as part of the master's thesis:
+* Random forest (_**RF.py**_)
+* Support vector machine (_**SVM.py**_)
+* XGBoost (_**XGB.py**_)
+<br>
+
+The scripts each contain the following four functions:
+* train(): This function is used to train and save the model
+* HP_opt(): This function performs random search
+* predict(): This function returns the most probable class based on a trained model
+* class_probability(): This function returns the probabilities of each class based on a trained model.
+
+The trained models are stored in the _**"Results"**_ folder and are also called up from there for prediction.
+
+
+### Reinforcement_Learning
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
