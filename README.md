@@ -22,7 +22,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#required-packages">Required Packages</a></li>
       </ul>
     </li>
     <li>
@@ -66,8 +66,6 @@ The following libraries with their respective versions are used in this project:
 * [Joblib](https://simpy.readthedocs.io/en/latest/index.html) v1.2.0
 * [matplotlib](https://simpy.readthedocs.io/en/latest/index.html) v3.4.1
 * [xgboost](https://simpy.readthedocs.io/en/latest/index.html) v1.6.2
-
-* [![React][React.js]][React-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -118,13 +116,13 @@ In total, the following three classification algorithms were tested as part of t
 <br>
 
 The scripts each contain the following four functions:
-* train(): This function is used to train and save the model
-* HP_opt(): This function performs random search
-* predict(): This function returns the most probable class based on a trained model
+* train(): This function is used to train and save the model.
+* HP_opt(): This function performs random search.
+* predict(): This function returns the most probable class based on a trained model.
 * class_probability(): This function returns the probabilities of each class based on a trained model.
 
 The trained models are stored in the _**"Results"**_ folder and are also called up from there for prediction.
-
+<br><br>
 
 ### Reinforcement_Learning
 
