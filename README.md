@@ -1,46 +1,10 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
-
-<h3 align="center">Evaluation of the Use of Reinforcement Learning in Retail Inventory Management</h3>
+<h2 align="center">Evaluation of the Use of Reinforcement Learning in Retail Inventory Management</h2>
 
   <p align="center">
     Master's thesis submitted on 27.03.2023 by Benedict Rau at the PSCM Department of TU Darmstadt
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+
   </p>
 
 
@@ -86,7 +50,7 @@ In the context of the master thesis, the use of reinforcement learning in invent
 ### Required Packages
 
 The following libraries with their respective versions are used in this project:
-* 
+
 * [Pytorch](https://pytorch.org): v1.12.1
 * [SimPy](https://simpy.readthedocs.io/en/latest/index.html) v4.0.1
 * [Numpy](https://simpy.readthedocs.io/en/latest/index.html) v1.22.4
