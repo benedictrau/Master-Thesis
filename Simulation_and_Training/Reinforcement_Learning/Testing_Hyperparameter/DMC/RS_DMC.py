@@ -1,12 +1,10 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
 ###########################
 ### 1 - Import packages ###
 ###########################
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from PredictStock import XGB
-from MLS import order_policy
+from DualModeControl import order_policy
 
 import numpy as np
 import pandas as pd
@@ -60,7 +58,7 @@ class NN(nn.Module):
         return self.net(x)
 
 
-def get_action(class_probability, prediction, string, mod, neurons_per_layer):
+def get_action(class_probability, prediction, string, mod, THRESHOLD, neurons_per_layer):
 
     model = NN(features, action_space, neurons_per_layer)
     model.load_state_dict(torch.load(string))
@@ -68,30 +66,34 @@ def get_action(class_probability, prediction, string, mod, neurons_per_layer):
 
     global action
 
-    if mod == "MLS":
-        state = prediction
-        state = np.array([[state]])
-        q_values = model.forward(torch.FloatTensor(state))
-        action = np.argmax(q_values.detach().numpy()[0])
-
-    elif mod == "QMDP":
-
+    if mod == "DMC":
+        entropie = 0
         class_probability = np.around(class_probability, 2)
+
+        for x in np.nditer(class_probability.T):
+            if x != 0:
+                entropie += -np.log10(x) * x
+
+        # Get relevant classes with a probability larger than zero
         relevant_classes = np.where(class_probability > 0)
         relevant_classes = relevant_classes[1]
-        expected_rewards_per_action = np.zeros((1, action_space))
+        # Create an empty vector to store the votes in
+        voting_vector = np.zeros((1, action_space))
 
+        # Using a for-loop to get the votes of each relevant class
         for x in np.nditer(relevant_classes.T):
-            tensor = np.array(np.array([[x]]))
-            pred = model.forward(torch.FloatTensor(tensor))
-            predicted_action = np.argmax(pred.detach().numpy()[0])
-            best_q = pred[0][predicted_action].detach().item()
-            weighted_pred = best_q * class_probability[0][x].item()
-            expected_rewards_per_action[0][predicted_action] += weighted_pred
+            x = np.array(np.array([[x]]))
+            q_values = model.net(torch.FloatTensor(x))
+            predicted_action = np.argmax(q_values.detach().numpy()[0])
+            voting_vector[0][predicted_action] += 1
 
-        # multiply with -1 to select the index with the highest q-value
-        expected_rewards_per_action *= -1
-        action = np.argmax(expected_rewards_per_action[0])
+        action = np.argmax(voting_vector[0])
+
+        # if the entropie is larger than the threshold add 1 to let the system perform a stock count to reduce uncertainty
+        if entropie > THRESHOLD:
+            if action % 2 == 0:
+                action += 1
+
 
 
     return action
@@ -125,7 +127,7 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer)
         demand_deviation_boundary = DEMAND_DEVIATION_BOUNDARY,
         invisible_demand_size= INVISIBLE_DEMAND_SIZE,
         batch_size= BATCH_SIZE_ORDERS,
-        deviation_direction=DEVIATION_DIRECTION
+        deviation_direction= DEVIATION_DIRECTION
         )
 
     ## 6.1 - Set up and start the training loop ##
@@ -160,7 +162,7 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer)
 
         while True:
 
-            action = get_action(class_prob, prediction, string, mod, neurons_per_layer)
+            action = get_action(class_prob, prediction, string, mod, THRESHOLD=0.5, neurons_per_layer=neurons_per_layer)
             class_prob, prediction = predict(system_stock, last_stock_count)
 
             taken_actions.append(action)
@@ -228,6 +230,7 @@ def evaluation(mod, iterations):
     total_results_replay = []
     total_results_dropout = []
     total_results_neurons = []
+    total_results_threshold = []
     total_results_average_reward = []
     total_results_sigma_reward = []
     total_results_average_satisfied_orders = []
@@ -243,6 +246,7 @@ def evaluation(mod, iterations):
     global best_dropout
     global best_neurons
     global best_replay
+    global best_threshold
     run = 0
 
 
@@ -259,11 +263,12 @@ def evaluation(mod, iterations):
         replay_start_list = np.linspace(500, 4000, num=8)
         dropout_list = [0.2, 0.3, 0.4, 0.5, 0.6]
         neurons_list = [16, 32, 64, 128]
+        threshold_list = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
         # Train and Test Episodes and Simulation duration
-        train_epochs = 50
+        train_epochs = 10
         train_sim_dur = 100
-        test_epochs = 20
+        test_epochs = 10
         test_sim_dur = 200
 
         # Chose the parameters randomly out of the lists
@@ -291,22 +296,26 @@ def evaluation(mod, iterations):
         print(f'Neurons per layer: {neurons_choice}')
         total_results_neurons.append(neurons_choice)
 
-
+        threshold_choice = random.choice(threshold_list)
+        print(f'Threshold: {threshold_choice}')
+        total_results_threshold.append(threshold_choice)
 
         # !!! Needs to be updated !!!
         string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
-                 "RL/Testing_Hyperparameter/MLS/results_NN_Eva/"+str(mod)+\
+                 "RL/Testing_Hyperparameter/DMC/results_NN_RS/"+str(mod)+\
                  "_lr_"+str(learning_rate_choice)+\
                  "_gamma_"+str(gamma_choice)+\
                  "_batch_"+str(batch_size_choice)+\
                  "_replay_"+str(replay_choice)+\
                  "_dropout_"+str(dropout_choice)+\
-                 "_neurons_"+str(neurons_choice)+".pt"
+                 "_neurons_"+str(neurons_choice)+\
+                 "_threshold_"+str(threshold_choice)+".pt"
 
         #print("Train")
-        order_policy(learning_rate = learning_rate_choice, gamma = gamma_choice, train_sim_dur=train_sim_dur,
-                     train_epochs=train_epochs, batch_size = batch_size_choice, replay_start_size=replay_choice,
-                     string = string, dropout_rate= dropout_choice, neurons_per_layer=neurons_choice)
+        order_policy(learning_rate=learning_rate_choice, gamma=gamma_choice, train_sim_dur=train_sim_dur,
+                     train_epochs=train_epochs, batch_size=batch_size_choice, replay_start_size=replay_choice,
+                     string=string, dropout_rate=dropout_choice, neurons_per_layer=neurons_choice,
+                     threshold=threshold_choice)
 
         #print("Test")
         results = order_policy_eval(string, test_sim_dur=test_sim_dur, test_epochs=test_epochs, mod=mod,
@@ -319,7 +328,6 @@ def evaluation(mod, iterations):
 
         print(f'average test reward: {results["reward"].mean()}')
 
-
         if results["reward"].mean() > best_result:
             best_result = results["reward"].mean()
             best_result_sigma = results["reward"].std()
@@ -329,6 +337,7 @@ def evaluation(mod, iterations):
             best_dropout = dropout_choice
             best_neurons = neurons_choice
             best_replay = replay_choice
+            best_threshold = threshold_choice
 
 
     total_results = pd.DataFrame()
@@ -338,6 +347,7 @@ def evaluation(mod, iterations):
     total_results['dropout_rate'] = total_results_dropout
     total_results['neurons_per_layer'] = total_results_neurons
     total_results['replay_start_size'] = total_results_replay
+    total_results['Threshold'] = total_results_threshold
     total_results['avg_satisfied_orders'] = total_results_average_satisfied_orders
     total_results['avg_satisfied_demand'] = total_results_average_satisfied_demand
     total_results['sigma_reward_training'] = total_results_sigma_reward
@@ -358,13 +368,14 @@ def evaluation(mod, iterations):
     print(f'dropout: {best_dropout}')
     print(f'neurons: {best_neurons}')
     print(f'replay: {best_replay}')
+    print(f'threshold: {best_threshold}')
     print(f'avg_reward: {best_result}')
     print(f'reward_std: {best_result_sigma}')
 
 
 start_proc = time.process_time()
 
-run = evaluation(mod="MLS", iterations=2)
+run = evaluation(mod="DMC", iterations=1)
 
 end_proc = time.process_time()
 print('Required time: {:5.3f}s'.format(end_proc-start_proc))

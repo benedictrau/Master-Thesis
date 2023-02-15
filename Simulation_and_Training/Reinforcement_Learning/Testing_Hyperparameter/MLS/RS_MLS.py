@@ -6,7 +6,7 @@
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from PredictStock import XGB
-from QMDP import order_policy
+from MLS import order_policy
 
 import numpy as np
 import pandas as pd
@@ -41,7 +41,7 @@ action_space = 12
 
 class NN(nn.Module):
 
-    def __init__(self, features, action_space, neurons_per_layer=64):
+    def __init__(self, features, action_space, neurons_per_layer):
         dropout_rate = 0
         super(NN, self).__init__()
         self.net = nn.Sequential(
@@ -125,7 +125,7 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer)
         demand_deviation_boundary = DEMAND_DEVIATION_BOUNDARY,
         invisible_demand_size= INVISIBLE_DEMAND_SIZE,
         batch_size= BATCH_SIZE_ORDERS,
-        deviation_direction = DEVIATION_DIRECTION
+        deviation_direction=DEVIATION_DIRECTION
         )
 
     ## 6.1 - Set up and start the training loop ##
@@ -159,8 +159,6 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer)
 
 
         while True:
-
-
 
             action = get_action(class_prob, prediction, string, mod, neurons_per_layer)
             class_prob, prediction = predict(system_stock, last_stock_count)
@@ -249,6 +247,7 @@ def evaluation(mod, iterations):
 
 
     for i in range(iterations):
+        run += 1
 
         print("------------------------")
         print("Start Run: "+str(i))
@@ -292,20 +291,22 @@ def evaluation(mod, iterations):
         print(f'Neurons per layer: {neurons_choice}')
         total_results_neurons.append(neurons_choice)
 
+
+
         # !!! Needs to be updated !!!
-        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/" + \
-                 "RL/Testing_Hyperparameter/QMDP/results_NN_Eva/" + str(mod) + \
-                 "_lr_" + str(learning_rate_choice) + \
-                 "_gamma_" + str(gamma_choice) + \
-                 "_batch_" + str(batch_size_choice) + \
-                 "_replay_" + str(replay_choice) + \
-                 "_dropout_" + str(dropout_choice) + \
-                 "_neurons_" + str(neurons_choice) + ".pt"
+        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
+                 "RL/Testing_Hyperparameter/MLS/results_NN_RS/"+str(mod)+\
+                 "_lr_"+str(learning_rate_choice)+\
+                 "_gamma_"+str(gamma_choice)+\
+                 "_batch_"+str(batch_size_choice)+\
+                 "_replay_"+str(replay_choice)+\
+                 "_dropout_"+str(dropout_choice)+\
+                 "_neurons_"+str(neurons_choice)+".pt"
 
         #print("Train")
-        order_policy(learning_rate=learning_rate_choice, gamma=gamma_choice, train_sim_dur=train_sim_dur,
-                     train_epochs=train_epochs, batch_size=batch_size_choice, replay_start_size=replay_choice,
-                     string=string, dropout_rate=dropout_choice, neurons_per_layer=neurons_choice)
+        order_policy(learning_rate = learning_rate_choice, gamma = gamma_choice, train_sim_dur=train_sim_dur,
+                     train_epochs=train_epochs, batch_size = batch_size_choice, replay_start_size=replay_choice,
+                     string = string, dropout_rate= dropout_choice, neurons_per_layer=neurons_choice)
 
         #print("Test")
         results = order_policy_eval(string, test_sim_dur=test_sim_dur, test_epochs=test_epochs, mod=mod,
@@ -363,7 +364,7 @@ def evaluation(mod, iterations):
 
 start_proc = time.process_time()
 
-run = evaluation(mod="QMDP", iterations=2)
+run = evaluation(mod="MLS", iterations=2)
 
 end_proc = time.process_time()
 print('Required time: {:5.3f}s'.format(end_proc-start_proc))

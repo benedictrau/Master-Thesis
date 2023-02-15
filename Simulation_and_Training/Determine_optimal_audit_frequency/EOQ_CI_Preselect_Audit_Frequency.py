@@ -2,7 +2,7 @@
 ### 1 - Import packages ###
 ###########################
 
-from SimulateAndLearn.RL.Sim_Env import InventorySystem
+from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
 from SimulateAndLearn.Simulate.EOQ import EOQ_Calculation
 
 

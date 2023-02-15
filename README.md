@@ -59,13 +59,13 @@ This README file is intended to give an overview of the scripts used in the proj
 The following libraries with their respective versions are used in this project:
 
 * [Pytorch](https://pytorch.org): v1.12.1
-* [SimPy](https://simpy.readthedocs.io/en/latest/index.html) v4.0.1
-* [Numpy](https://simpy.readthedocs.io/en/latest/index.html) v1.22.4
-* [Pandas](https://simpy.readthedocs.io/en/latest/index.html) v1.3.2
-* [Scikit-Learn](https://simpy.readthedocs.io/en/latest/index.html) v1.2.0
-* [Joblib](https://simpy.readthedocs.io/en/latest/index.html) v1.2.0
-* [matplotlib](https://simpy.readthedocs.io/en/latest/index.html) v3.4.1
-* [xgboost](https://simpy.readthedocs.io/en/latest/index.html) v1.6.2
+* [SimPy](https://simpy.readthedocs.io/en/latest/index.html): v4.0.1
+* [NumPy](https://numpy.org): v1.22.4
+* [pandas](https://pandas.pydata.org): v1.3.2
+* [scikit-learn](https://scikit-learn.org/stable/): v1.2.0
+* [Joblib](https://joblib.readthedocs.io/en/latest/): v1.2.0
+* [matplotlib](https://matplotlib.org): v3.4.1
+* [xgboost](https://xgboost.ai): v1.6.2
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -99,10 +99,10 @@ To get a local copy up and running follow these simple example steps.
 
 In the following, an overview of the scripts used in the project is given based on the folder structure. 
 
-### Predict Stock
+### Predict_Stock
 
 #### Generate the data to train the classification models
-This folder contains all scripts and files used to generate the belief state. 
+The folder _**"Predict_Stock"**_ contains all scripts and files used to generate the belief state. 
 The file _**"Main_predict_stock_createCSV.py"**_ was used to generate the data for training the classification models.
 This script interacts with the reduced simulation model of the inventory system that can be found under the file name _**"Env_predict_stock.py"**_. <br>
 The generated .csv files are stored in the folder _**"Data"**_.
@@ -110,21 +110,44 @@ The generated .csv files are stored in the folder _**"Data"**_.
 
 #### Classification models
 In total, the following three classification algorithms were tested as part of the master's thesis:
-* Random forest (_**RF.py**_)
-* Support vector machine (_**SVM.py**_)
-* XGBoost (_**XGB.py**_)
+* Random forest (_**"RF.py"**_)
+* Support vector machine (_**"SVM.py"**_)
+* XGBoost (_**"XGB.py"**_)
 <br>
 
 The scripts each contain the following four functions:
-* train(): This function is used to train and save the model.
-* HP_opt(): This function performs random search.
-* predict(): This function returns the most probable class based on a trained model.
-* class_probability(): This function returns the probabilities of each class based on a trained model.
+* _train()_: This function is used to train and save the model using the .csv files from the folder _**"Data"**_.
+* _HP_opt()_: This function performs random search to optimize the hyperparameter.
+* _predict()_: This function returns the most probable class based on a trained model.
+* _class_probability()_: This function returns the probabilities of each class based on a trained model.
 
 The trained models are stored in the _**"Results"**_ folder and are also called up from there for prediction.
 <br><br>
 
-### Reinforcement_Learning
+### Simulation_and_Training
+The folder _**"Simulation_and_Learn"**_ contains all files that are related with the simulation of the inventory system and the training of the Reinforcement Learning agents.
+
+#### Determine_optimal_audit_frequency
+This sub-folder contains the scripts required to determine the optimal audit frequency for the EOQ and the (Q,R) policy. The two following scripts are used to derive the optimal audit frequency:
+* _**"EOQ_CI_Preselect_Audit_Frequency.py"**_: This script is used to determine the optimal audit frequency for the EOQ policy.
+* _**"QR_CI_Preselect_Audit_Frequency.py"**_: This script is used to determine the optimal audit frequency for the (Q,R) policy.
+
+The results from the two evaluations are stored as an .xlsx file in the folder **"Results_Excel"**.
+<br><br>
+
+#### Reinforcement_Learning
+The following scripts are stored in the folder "Reinforcement_Learning":
+* _**MLS.py**_: In this script a Reinforcement Learning agent can be trained using the POMDP approximator "Most Likely State".
+* _**QMDP.py**_: In this script a Reinforcement Learning agent can be trained using the POMDP approximator "QMDP".
+* _**DMC.py**_: In this script a Reinforcement Learning agent can be trained using the POMDP approximator "Dual Mode Control".
+
+The three scripts are able to train an agent for a given hyperparameter-set. The neural network is saved after training in the folder "xy".
+
+###### Testing Hyperparameter
+
+
+<br><br>
+#### SimulationStudy
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

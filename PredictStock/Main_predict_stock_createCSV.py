@@ -24,8 +24,8 @@ BATCH_SIZE = 20
 DEVIATION_DIRECTION = 0.7
 
 
-filename1 = 'Data/x_new_SVM.csv'
-filename2 = 'Data/y_new_SVM.csv'
+filename1 = 'Data/x_new.csv'
+filename2 = 'Data/y_new.csv'
 
 def Simulation_Environment():
 

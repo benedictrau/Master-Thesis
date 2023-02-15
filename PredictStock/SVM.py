@@ -12,8 +12,8 @@ import time
 
 def train():
     result_name = "Results/SVM_optimized.joblib"
-    data_x = 'Data/x_new_SVM.csv'
-    data_y = 'Data/y_new_SVM.csv'
+    data_x = 'Data/x_new.csv'
+    data_y = 'Data/y_new.csv'
 
     X = np.genfromtxt(data_x, delimiter=',', skip_header=1)
     Y = np.genfromtxt(data_y, delimiter=',', skip_header=1)
@@ -60,8 +60,8 @@ def HP_opt():
     start_proc = time.time()
 
     # Load data
-    data_x = 'Data/x_new_SVM.csv'
-    data_y = 'Data/y_new_SVM.csv'
+    data_x = 'Data/x_new.csv'
+    data_y = 'Data/y_new.csv'
 
     X = np.genfromtxt(data_x, delimiter=',', skip_header=1)
     Y = np.genfromtxt(data_y, delimiter=',', skip_header=1)
@@ -83,7 +83,6 @@ def HP_opt():
     svm_params_rand = {"C": np.arange(1, 102, 10),
                        "gamma": np.arange(0.1, 1, 0.2),
                        "kernel": ['rbf', 'poly', 'sigmoid'],
-                       # "kernel": ['rbf', 'sigmoid'],
                        "degree": [1, 2, 3, 4]}
 
     # define search, cv = 5 meaning stratisfied 5-fold cross-validation
@@ -104,12 +103,11 @@ def HP_opt():
     print('Required time: {:5.3f}s'.format(end_proc - start_proc))
 
 
-HP_opt()
+#HP_opt()
 
 
 def predict(x, y):
-    loaded_svm = joblib.load(
-        "/Users/benedictrau/Documents/GitHub/Masterarbeit/PredictStock/Results/SVM_optimized.joblib")
+    loaded_svm = joblib.load("Results/SVM_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     prediction = int(loaded_svm.predict(z))
     return prediction
@@ -118,8 +116,9 @@ def predict(x, y):
 
 
 def class_probability(x, y):
-    loaded_svm = joblib.load(
-        "/Users/benedictrau/Documents/GitHub/Masterarbeit/PredictStock/Results/SVM_optimized.joblib")
+    loaded_svm = joblib.load("Results/SVM_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     class_probability = loaded_svm.predict_proba(z)
     return class_probability
+
+#print(predict(10, 10))

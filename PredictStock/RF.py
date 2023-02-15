@@ -2,7 +2,6 @@ import numpy as np
 import joblib
 import os
 import time
-import pandas
 import pandas as pd
 
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
@@ -119,7 +118,7 @@ def HP_opt():
 
 
 def predict(x, y):
-    loaded_rf = joblib.load("/Users/benedictrau/Documents/GitHub/Masterarbeit/PredictStock/Results/RF_optimized.joblib")
+    loaded_rf = joblib.load("Results/RF_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     prediction = int(loaded_rf.predict(z))
     return prediction
@@ -127,7 +126,7 @@ def predict(x, y):
 
 
 def class_probability(x, y):
-    loaded_rf = joblib.load("/Users/benedictrau/Documents/GitHub/Masterarbeit/PredictStock/Results/RF_optimized.joblib")
+    loaded_rf = joblib.load("Results/RF_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     class_probability = loaded_rf.predict_proba(z)
     return class_probability

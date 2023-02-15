@@ -4,7 +4,7 @@
 ### 1 - Import packages ###
 ###########################
 
-from SimulateAndLearn.RL.Sim_Env import InventorySystem
+from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
 from PredictStock import RF
 from QMDP import order_policy
 
@@ -284,8 +284,7 @@ def get_default():
     test_sim_dur = 200
 
     # get benchmark
-    default_string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/" \
-                     "RL/Testing_Hyperparameter/QMDP/results_NN_FS/default.pt"
+    default_string = "results_NN_FS/default.pt"
 
     print("------------------------")
     print("Default values")
@@ -359,9 +358,10 @@ def evaluation(mod, varied_parameter):
         print("Start Run: "+str(run))
         print(str(varied_parameter)+": "+str(i))
 
-        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
-                 "RL/Testing_Hyperparameter/QMDP/results_NN_FS/"+str(mod)+"_"+str(varied_parameter)+\
-                 "_"+str(i)+".pt"
+        string = "results_NN_FS/"\
+                 +str(mod)+"_"\
+                 +str(varied_parameter)+"_"+\
+                 str(i)+".pt"
 
         order_policy(learning_rate = lr, gamma = gamma, train_sim_dur=train_sim_dur,
                      train_epochs=train_epochs, batch_size = batch_size, exp_max=exp_max, exp_min = exp_min,

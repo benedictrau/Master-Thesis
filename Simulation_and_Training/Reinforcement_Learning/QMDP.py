@@ -496,7 +496,7 @@ def order_policy():
     # Display the plots
     plot_results(results_run, results_exploration, results_score, results_avg_MSE)
     # Save the model
-    torch.save(policy_net.state_dict(), 'results_NN_Eva/' + RESULT_NAME + '.pt')
+    torch.save(policy_net.state_dict(), 'results_NN_RS/' + RESULT_NAME + '.pt')
     # Safe dataframe as an excel file (only needed for hyperparameter optimization
     sim_details.to_excel("Results_Excel/" + RESULT_NAME + "_" + TUNED_PARAMETER
                          + "_" + str(LEARNING_RATE) +".xlsx", sheet_name="Results")
