@@ -27,17 +27,11 @@
 
 
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Evaluation of the Use of Reinforcement Learning in Retail Inventory Management</h3>
 
   <p align="center">
-    project_description
+    Master's thesis submitted on 27.03.2023 by Benedict Rau at the PSCM Department of TU Darmstadt
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
@@ -48,7 +42,7 @@
     ·
     <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
   </p>
-</div>
+
 
 
 
@@ -83,9 +77,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+In the context of the master thesis, the use of reinforcement learning in inventory management in the retail sector was evaluated. This README file is intended to give an overview of the scripts used in the project and to provide the reader with instructions on how to execute the scripts independently. `project_description`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -93,14 +85,19 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Required Packages
 
-* [![Next][Next.js]][Next-url]
+The following libraries with their respective versions are used in this project:
+* 
+* [Pytorch](https://pytorch.org): v1.12.1
+* [SimPy](https://simpy.readthedocs.io/en/latest/index.html) v4.0.1
+* [Numpy](https://simpy.readthedocs.io/en/latest/index.html) v1.22.4
+* [Pandas](https://simpy.readthedocs.io/en/latest/index.html) v1.3.2
+* [Scikit-Learn](https://simpy.readthedocs.io/en/latest/index.html) v1.2.0
+* [Joblib](https://simpy.readthedocs.io/en/latest/index.html) v1.2.0
+* [matplotlib](https://simpy.readthedocs.io/en/latest/index.html) v3.4.1
+* [xgboost](https://simpy.readthedocs.io/en/latest/index.html) v1.6.2
+
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -229,7 +226,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next.js]: https://upload.wikimedia.org/wikipedia/commons/9/96/Pytorch_logo.png
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
