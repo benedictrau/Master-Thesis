@@ -53,7 +53,7 @@
 
 In the context of the master thesis, the use of reinforcement learning in inventory management in the retail sector was evaluated. <br>
 This README file is intended to give an overview of the scripts used in the project and to provide the reader with instructions on how to execute the scripts independently.
-`project_description`
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -92,9 +92,12 @@ To get a local copy up and running follow these simple example steps.
    ```
 2. Install the required packages
    ```sh
-   pip install -package name-
+   pip install "package name"
    ```
-
+   If you have already installed the package you can get the required version as follows.
+   ```sh
+   pip install --force-reinstall -v "package name==1.2.2"
+   ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
