@@ -28,16 +28,21 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#Overview-of-the-Python-scripts-used">Overview of the Python scripts used</a></li>
+      <ul>
+        <li><a href="#Predict_Stock">PredictStock</a></li>
+      </ul>
+      <ul>
+        <li><a href="#Simulation_and_Training">Simulation_and_Training</a></li>
+      </ul>
+      <ul>
+        <li><a href="#SimulationStudy">SimulationStudy</a></li>
+      </ul>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
