@@ -153,12 +153,11 @@ The three scripts are able to train an agent for a given hyperparameter-set. The
 
 ###### Testing_Hyperparameter
 The sub-folder **Testing_Hyperparameter** contains all scripts used to conduct the hyperparameter testing. Thus, three more sub-folders are used for each POMDP approximator. Each of these folders contains the following three scripts:
-* **_"FactorScreening_**"POMDP Approximator Name"**_.py"_**:
-* _**"RS__**"POMDP Approximator Name"**_.py"_**:
-* _**"POMDP Approximator Name.py":**_
-
-
+* **"FactorScreening_**_POMDP Approximator Name_**.py"**: This script is used to conduct the factor screening to determine the hyperparameters that influence the reward most.
+* **"RS_**_POMDP Approximator Name_**.py"**: After the hyperparameters are determined that influence the results most, they are used for random search to optimize them. 
+* _**"POMDP Approximator Name.py"**_: This script is used for training the agents. The script is called while factor screening and random search.
 <br><br>
+
 #### SimulationStudy
 In the folder _**"SimulationStudy"**_ all scripts required to conduct the simulation study are stored. The script _**"SimulationStudy.py"**_ is mainly responsible to conduct the simulation study, determine the transient times and calculate the number of simulation runs.
 * _det_transient_time()_: The function _det_transient_time_ is used to determine the transient time. Thus, the function creates the plot required for the graphical analysis.
