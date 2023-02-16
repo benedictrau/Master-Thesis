@@ -5,6 +5,7 @@ import numpy as np
 features = 1
 action_space = 12
 
+# Define the neural network
 class NN(nn.Module):
 
     def __init__(self, features, action_space, neurons_per_layer):
@@ -26,10 +27,12 @@ class NN(nn.Module):
         return self.net(x)
 
 
+# function used to get the action using a policy trained by a RL agent
 def get_action(class_probability, prediction, mod, string, neurons_per_layer, THRESHOLD):
 
     global action
 
+    # depending on the policy the neural net is initialized and the action is determined
     if mod == "MLS":
         features = 1
         action_space = 12
@@ -66,6 +69,7 @@ def get_action(class_probability, prediction, mod, string, neurons_per_layer, TH
         expected_rewards_per_action *= -1
         action = np.argmax(expected_rewards_per_action[0])
 
+
     elif mod == "DMC":
         features = 1
         action_space = 12
@@ -94,7 +98,7 @@ def get_action(class_probability, prediction, mod, string, neurons_per_layer, TH
 
         action = np.argmax(voting_vector[0])
 
-        # if the entropie is larger than the threshold add 1 to let the system perform a stock count to reduce uncertainty
+        # if the entropie is larger than the threshold increase the action value by one to let the system perform a stock count to reduce uncertainty
         if entropie > THRESHOLD:
             if action % 2 == 0:
                 action += 1

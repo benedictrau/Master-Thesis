@@ -1,9 +1,6 @@
-###########################
-### 1 - Import packages ###
-###########################
-
+# Import packages
 from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
-from SimulateAndLearn.Simulate.EOQ import EOQ_Calculation
+from SimulationStudy.EOQ import EOQ_Calculation
 
 
 import numpy as np
@@ -14,7 +11,7 @@ import matplotlib.pyplot as plt
 
 # Set whether to display on screen (slows model)
 DISPLAY_ON_SCREEN = False
-# Time step between actions
+# Time steps simulated in one step
 TIME_STEP = 1
 
 ### Simulation Parameter ###
@@ -33,10 +30,7 @@ DEVIATION_DIRECTION = 0.7
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
-def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
+def order_policy_eval(audit_frequency, sim_dur, episodes):
 
     global total_reward
     sim = InventorySystem(
@@ -59,7 +53,6 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
     ## 6.1 - Set up and start the training loop ##
     run = 0
     continue_learning = True
-    action_space = sim.action_size
     all_actions = sim.actions
 
     # Set up dicts to store the results of the different simulation runs
@@ -73,7 +66,8 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
 
         # Count run
         run += 1
-        # Reset sim env
+
+        # Reset sim env and get the initial state
         state = sim.reset()
         system_stock = state[0]
         last_stock_count = state[1]
@@ -93,17 +87,16 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
             global action
             step += 1
 
-            # order parts (MUSS NICHT IN JEDER ITERATION ABGERUFEN WERDEN, dann muss man aber audit anders implementieren)
-            if mod == "EOQ":
-                if system_stock <= MEAN_DEMAND_SIZE:
-                    action = EOQ_Calculation(COST_PER_ORDER=COST_PER_ORDER, COST_PER_ITEM= COST_PER_ITEM,
-                                             MEAN_DEMAND_SIZE=MEAN_DEMAND_SIZE, COST_RATE_HOLDING=COST_RATE_HOLDING,
-                                             BATCH_SIZE_ORDERS=BATCH_SIZE_ORDERS, SIM_DURATION=sim_dur,
-                                             action_space=all_actions)
-                else:
-                    action = 0
 
-            # Audit frequency
+            if system_stock <= MEAN_DEMAND_SIZE:
+                action = EOQ_Calculation(COST_PER_ORDER=COST_PER_ORDER, COST_PER_ITEM= COST_PER_ITEM,
+                                         MEAN_DEMAND_SIZE=MEAN_DEMAND_SIZE, COST_RATE_HOLDING=COST_RATE_HOLDING,
+                                         BATCH_SIZE_ORDERS=BATCH_SIZE_ORDERS, SIM_DURATION=sim_dur,
+                                         action_space=all_actions)
+            else:
+                action = 0
+
+            # Conduct a stock audit if the last stock count reached the audit frequency
             if last_stock_count == audit_frequency:
                 action += 1
 
@@ -132,14 +125,11 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
             # Actions to take at the end of gaming episode
             if terminal:
 
-                fraction_of_satisfied_demand = KPI[0]
-                fraction_of_satisfied_orders = KPI[1]
-
                 # Add sim results after one simulation run to the results lists
                 results_run.append(run)
                 results_score.append(total_reward)
-                results_fraction_of_satisfied_demand.append(fraction_of_satisfied_demand)
-                results_fraction_of_satisfied_orders.append(fraction_of_satisfied_orders)
+                results_fraction_of_satisfied_demand.append(KPI[0])
+                results_fraction_of_satisfied_orders.append(KPI[1])
 
                 # Get total reward
                 total_reward = np.sum(rewards)
@@ -175,7 +165,7 @@ def plot_results(audit_frequency, average_reward, lower_bound, upper_bound):
     plt.show()
 
 
-def sim_study(iterations, mod):
+def sim_study(iterations):
 
     # Initialize lists to store the results
     total_results_audit_frequency = []
@@ -203,8 +193,9 @@ def sim_study(iterations, mod):
         test_epochs = 250
         test_sim_dur = 200
 
-        results = order_policy_eval(mod=mod, audit_frequency=i,
-                                    sim_dur=test_sim_dur, episodes=test_epochs)
+        results = order_policy_eval(audit_frequency=i,
+                                    sim_dur=test_sim_dur,
+                                    episodes=test_epochs)
 
 
         # Get the results from the simulation run
@@ -242,7 +233,7 @@ def sim_study(iterations, mod):
     print(f'avg_reward: {best_result}')
     print(f'reward_std: {best_result_sigma}')
 
-    total_results.to_excel("Results_Excel/" + mod + "_CI.xlsx", sheet_name="Results")
+    total_results.to_excel("Results_Excel/" + "EOQ" + "_CI.xlsx", sheet_name="Results")
 
     plot_results(audit_frequency=total_results_audit_frequency, average_reward = total_results_average_reward,
                  lower_bound=total_results_lower_bound, upper_bound=total_results_upper_bound)
@@ -250,7 +241,7 @@ def sim_study(iterations, mod):
 
 start_proc = time.process_time()
 
-run = sim_study(iterations=200, mod="QR")
+run = sim_study(iterations=200)
 
 end_proc = time.process_time()
 print('Required time: {:5.3f}s'.format(end_proc-start_proc))

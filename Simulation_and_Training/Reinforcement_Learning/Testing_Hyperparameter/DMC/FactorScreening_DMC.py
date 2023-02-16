@@ -1,9 +1,4 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
-###########################
-### 1 - Import packages ###
-###########################
-
+# Import packages
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from PredictStock import RF
 from DualModeControl import order_policy
@@ -38,6 +33,8 @@ DEVIATION_DIRECTION = 0.7
 features = 1
 action_space = 12
 
+
+# Class to initialize the neural network
 class NN(nn.Module):
 
     def __init__(self, features, action_space, neurons_per_layer=64):

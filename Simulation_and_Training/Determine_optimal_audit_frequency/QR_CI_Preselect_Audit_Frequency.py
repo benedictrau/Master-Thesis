@@ -1,7 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
-
+# Import packages
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from SimulateAndLearn.Simulate.QR import QR_Calculation
 
@@ -12,9 +9,9 @@ import time
 import matplotlib.pyplot as plt
 
 
-# Set whether to display on screen (slows model)
+# Set whether to display on screen
 DISPLAY_ON_SCREEN = False
-# Time step between actions
+# Time steps simulated in one step
 TIME_STEP = 1
 
 ### Simulation Parameter ###
@@ -33,10 +30,7 @@ DEVIATION_DIRECTION = 0.7
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
-def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
+def order_policy_eval(audit_frequency, sim_dur, episodes):
 
     global total_reward
     sim = InventorySystem(
@@ -56,7 +50,7 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
         deviation_direction=DEVIATION_DIRECTION
         )
 
-    ## 6.1 - Set up and start the training loop ##
+    # Set up and start the training loop
     run = 0
     continue_learning = True
     all_actions = sim.actions
@@ -71,11 +65,11 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
 
         # Count run
         run += 1
-        # Reset sim env
+
+        # Reset sim env and get the initial state
         state = sim.reset()
         system_stock = state[0]
         last_stock_count = state[1]
-        actual_inventory = state[2]
 
 
         # Set up trackers
@@ -87,26 +81,24 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
         inventory_action = []
         total_reward = 0
 
-
+        # get the action and reorder point
         selected_action, ROP = QR_Calculation(COST_PER_ITEM=COST_PER_ITEM,COST_PER_ORDER=COST_PER_ORDER,
                                               MEAN_DEMAND_SIZE=MEAN_DEMAND_SIZE, SIGMA_DEMAND_SIZE=SIGMA_DEMAND_SIZE,
                                               COST_RATE_HOLDING=COST_RATE_HOLDING, COST_RATE_SHORTAGE=COST_RATE_SHORTAGE,
                                               BATCH_SIZE_ORDERS=BATCH_SIZE_ORDERS, SIM_DURATION=sim_dur,
                                               action_space=all_actions)
 
-        #print(f'ROP: {ROP}')
-
 
 
         while True:
 
             action = 0
-            #print(f'system stock: {system_stock}')
 
             if system_stock <= ROP:
+                # if the stock is smaller than the reorder point order the replenishment quantity
                 action = selected_action
 
-            # Audit frequency
+            # Conduct a stock audit if the last stock count reached the audit frequency
             if last_stock_count == audit_frequency:
                 action += 1
 
@@ -136,9 +128,6 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
 
             # Actions to take at the end of gaming episode
             if terminal:
-
-                #fraction_of_satisfied_demand = KPI[0]
-                #fraction_of_satisfied_orders = KPI[1]
 
                 # Add sim results after one simulation run to the results lists
                 results_run.append(run)
@@ -204,12 +193,12 @@ def sim_study(iterations):
         print(f'Audit frequency: {i}')
         total_results_audit_frequency.append((i))
 
-        #
         test_epochs = 250
         test_sim_dur = 200
 
-        results = order_policy_eval(mod="QR", audit_frequency=i,
-                                    sim_dur=test_sim_dur, episodes=test_epochs)
+        results = order_policy_eval(audit_frequency=i,
+                                    sim_dur=test_sim_dur,
+                                    episodes=test_epochs)
 
 
         # Get the results from the simulation run

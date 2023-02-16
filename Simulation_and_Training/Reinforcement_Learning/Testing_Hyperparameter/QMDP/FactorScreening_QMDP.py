@@ -1,5 +1,3 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
 ###########################
 ### 1 - Import packages ###
 ###########################

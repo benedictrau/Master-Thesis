@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 
-
+# calculate the reorder point
 def ROP(q, h, p, sim_dur, muh, sigma, c):
     s = (q*h)/(p*c*sim_dur*muh)
     z = stats.norm.ppf(1-s)
@@ -9,7 +9,7 @@ def ROP(q, h, p, sim_dur, muh, sigma, c):
 
     return reorder_point
 
-
+# calculate the cost
 def calc_cost(q, r, h, k, muh, sigma, p, c, sim_dur):
 
     s = (q * h) / (p * c * sim_dur * muh)
@@ -20,7 +20,7 @@ def calc_cost(q, r, h, k, muh, sigma, p, c, sim_dur):
     #print(period_cost)
     return period_cost
 
-
+# function used to calculate the optimal Q,R combination
 def QR_Calculation(COST_PER_ITEM, COST_PER_ORDER, MEAN_DEMAND_SIZE, SIGMA_DEMAND_SIZE, COST_RATE_HOLDING, COST_RATE_SHORTAGE,
                    BATCH_SIZE_ORDERS, SIM_DURATION, action_space):
 
@@ -31,6 +31,7 @@ def QR_Calculation(COST_PER_ITEM, COST_PER_ORDER, MEAN_DEMAND_SIZE, SIGMA_DEMAND
     best_q = 0
     best_tc = 1000000
 
+    # for each possible order quantity calculate the ROP and the costs using the previously defined functions
     for i in range(max_batch_size_multiple):
 
         # i+1 since for order quantity of 0 no ROP can be derived
@@ -42,21 +43,17 @@ def QR_Calculation(COST_PER_ITEM, COST_PER_ORDER, MEAN_DEMAND_SIZE, SIGMA_DEMAND
         cost = calc_cost(q=order_quantity, r=reorder_point, h=COST_RATE_HOLDING, k=COST_PER_ORDER, muh = MEAN_DEMAND_SIZE,
                          sigma=SIGMA_DEMAND_SIZE, p=COST_RATE_SHORTAGE, c=COST_PER_ITEM, sim_dur=SIM_DURATION)
 
-        #print(f'order quantity: {order_quantity}')
-        #print(f'cost: {cost}')
-        #print("-----------------")
 
+        # store the best ROP and Q
         if cost < best_tc:
             best_rop = reorder_point
             best_q = order_quantity
             best_tc = cost
 
-
+    # since the action is always divided by 2 in the simulation environment
     action = (best_q/BATCH_SIZE_ORDERS)*2
     reorder_point = best_rop
 
-    #print(f'action: {action}')
-    #print(f'ROP: {reorder_point}')
 
 
     return action, reorder_point

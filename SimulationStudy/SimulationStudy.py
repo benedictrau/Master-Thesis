@@ -33,7 +33,7 @@ BATCH_SIZE_ORDERS = 20
 DEVIATION_DIRECTION = 0.7
 
 
-
+# get the prediction of the current stock class and the probabilities of being in each class
 def predict(system_stock, last_stock_count):
 
     class_prob = XGB.class_probability(system_stock, last_stock_count)
@@ -41,7 +41,7 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-
+# Plot the deviation and action taken
 def plot_results(run, deviation, action, action_taken):
 
     # plot to detect freezing
@@ -68,10 +68,13 @@ def plot_results(run, deviation, action, action_taken):
 
 
 
-
+# plot to determine the transient time
 def plot_transient_time(step_list, df, window, mod):
 
+
+    # First, calculate the mean system inventory at each simulation step
     df['mean'] =df.mean(axis=1)
+    # Then, calculate the rolling average
     df['rolling_average'] = df["mean"].rolling(window, min_periods=1).mean()
 
     plt.plot(step_list, df['rolling_average'])
@@ -90,7 +93,7 @@ def plot_transient_time(step_list, df, window, mod):
     plt.show()
 
 
-
+# plot to show the stock deviation
 def plot_deviation_stock(run, system_stock, actual_stock, deviation, actions, actions_taken):
 
 
@@ -121,12 +124,11 @@ def plot_deviation_stock(run, system_stock, actual_stock, deviation, actions, ac
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+# function used to conduct a simulation run
 def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_frequency, transient_time=0,
                  plot_action=False, plot_transient = False, plot_dev_stock = False, window=0):
 
+    # initialize the parameters used in the simulation environment
     global total_reward
     sim = InventorySystem(
         sim_duration = sim_dur,
@@ -166,7 +168,8 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
         run += 1
         step = 1
         sim_step = 0
-        # Reset sim env
+
+        # Reset sim env before starting a new simulation run
         state = sim.reset()
         system_stock = state[0]
         last_stock_count = state[1]
@@ -190,7 +193,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
 
             global action
 
-            #if mod == "MLS" or "QMDP" or "DMC":
+            # get the action depending on the policy (mod) used
             if mod == "MLS":
                 class_prob, prediction = predict(system_stock, last_stock_count)
 
@@ -255,6 +258,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
             # Get the results from the simulation with the respective action taken
             state_next, reward, terminal, info, KPI = sim.step(action)
 
+            # if the transient time is passed start storing the results
             if step >= transient_time:
                 sim_step += 1
                 total_reward += reward
@@ -278,6 +282,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
             # Actions to take at the end of gaming episode
             if terminal:
 
+                # get the KPIs
                 fraction_of_satisfied_demand = KPI[0]
                 fraction_of_satisfied_orders = KPI[1]
                 satisfied_demand = KPI[2]
@@ -285,6 +290,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
                 satisfied_orders = KPI[4]
                 missed_orders = KPI[5]
 
+                # calculate the average inventory
                 average_inventory = np.mean(inventory_actual)
 
                 # Clear print row content
@@ -304,6 +310,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
                 # Get total reward
                 total_reward = np.sum(rewards)
 
+                # if the boolean variable plot_transient is set to True a dataframe is used to store the system inventory
                 if plot_transient == True:
                     df.insert(loc=run-1, column=str(run), value=inventory_system)
 
@@ -313,6 +320,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
                 if run == sim_episodes:
                     continue_learning = False
 
+                    # depending on the variables plots are created
                     if plot_action == True:
                         plot_results(step_list, deviation, actions, actions_taken)
 
@@ -337,7 +345,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
     return sim_details
 
 
-
+# get the string where the neural net is stored depending on the mod selected
 def get_string(mod):
 
     global string_RL
@@ -363,9 +371,10 @@ def get_string(mod):
     return string_RL, neurons_per_layer
 
 
-
+# function to determine the transient time
 def det_transient_time(mod, sim_dur, sim_episodes, audit_frequency, window):
 
+    # depending on the mod get the string where the neural net is saved
     string_RL, neurons_per_layer = get_string(mod)
     order_policy(mod, sim_dur, sim_episodes, neurons_per_layer=neurons_per_layer, string=string_RL,
                  audit_frequency=audit_frequency, plot_transient = True, window=window, plot_action=False)
@@ -380,7 +389,7 @@ def det_transient_time(mod, sim_dur, sim_episodes, audit_frequency, window):
 
 
 
-# To run wirh one policy
+# To run with one policy
 def plot_deviation_inventory(mod, sim_dur, sim_episodes=1, audit_frequency=200):
 
     string_RL, neurons_per_layer = get_string(mod)
@@ -392,7 +401,7 @@ def plot_deviation_inventory(mod, sim_dur, sim_episodes=1, audit_frequency=200):
 #                        audit_frequency=200)
 
 
-# To print actions and stock deviation
+# Function to print actions and stock deviation
 def one_run(mod, sim_dur, audit_frequency, sim_episodes, transient_time=0):
 
     string_RL, neurons_per_layer = get_string(mod)
@@ -419,6 +428,7 @@ def one_run(mod, sim_dur, audit_frequency, sim_episodes, transient_time=0):
 #        audit_frequency=14)
 
 
+# Plot the confidence interval
 def plot_confidence_interval(x, mean, sigma, horizontal_line_width=0.25, color='#2187bb'):
     print(f'mean: {mean}')
     print(f'sigma: {sigma}')
@@ -438,7 +448,7 @@ def plot_confidence_interval(x, mean, sigma, horizontal_line_width=0.25, color='
 
 
 
-
+# Function to conduct the simulation study and plot the confidence interval
 def confidence_interval():
 
 
@@ -448,14 +458,8 @@ def confidence_interval():
     df["audit_freq"] = [250, 250, 250, 250, 14, 250, 30]
     df["transient_time"] = [50, 50, 25, 0, 80, 0, 75]
 
-    #df["mod"] = ["EOQ", "EOQ", "QR", "QR"]
-    #df["sim_episodes"] = [10, 10, 10, 10]
-    #df["audit_freq"] = [250, 20, 250, 20]
-    #df["transient_time"] = [20, 10, 20, 0]
-
     run = []
     run_mod = []
-
 
     for i in range(len(df["mod"])):
         mod = df.at[i, "mod"]
@@ -492,11 +496,11 @@ def confidence_interval():
     plt.show()
 
 
-confidence_interval()
+#confidence_interval()
 
 
 
-
+# Function to determine the number of replications required
 def prerun():
 
     df = pd.DataFrame()

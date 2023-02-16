@@ -1,25 +1,28 @@
 import math
 import numpy as np
 
+
+# Function to determine the optimal order quantity using the EOQ model
 def EOQ_Calculation(COST_PER_ORDER, COST_PER_ITEM, MEAN_DEMAND_SIZE, COST_RATE_HOLDING,
                     BATCH_SIZE_ORDERS, SIM_DURATION, action_space):
 
     # total demand within the considered simulation time
     total_demand = MEAN_DEMAND_SIZE * SIM_DURATION
+
     # get the maximum action that can be taken according to the action space
     max_batch_size_multiple = np.argmax(action_space)//2
 
+    # calculate the optimal quantity (float value)
     quantity = math.sqrt((2* total_demand * COST_PER_ORDER) /
                          (COST_PER_ITEM * COST_RATE_HOLDING))
 
-
+    # Rounding the value up and multiply it by the batch size to get the two possible candidates for the optimal order quantity under the constraint of batch sizes
     y_1 = BATCH_SIZE_ORDERS * np.floor(quantity / BATCH_SIZE_ORDERS)
     y_2 = BATCH_SIZE_ORDERS * np.ceil(quantity / BATCH_SIZE_ORDERS)
 
 
 
-    # if both candidates are above or equal the max batch_size, the order quantity must
-    # equal the maximal possible order quantity
+    # if both candidates are above or equal the max batch_size, the order quantity must equal the maximal possible order quantity
     if y_1 and y_2 >= (max_batch_size_multiple*BATCH_SIZE_ORDERS):
         multiple = max_batch_size_multiple
 
@@ -37,10 +40,11 @@ def EOQ_Calculation(COST_PER_ORDER, COST_PER_ITEM, MEAN_DEMAND_SIZE, COST_RATE_H
         else:
             multiple = y_1
 
-    # since the action is always divided by 2
+    # since the action is always divided by 2 in the simulation environment
     action = multiple*2
 
     return action
+
 
 #result = EOQ_Calculation(COST_PER_ORDER = 10, COST_PER_ITEM = 2, MEAN_DEMAND_SIZE = 15, COST_RATE_HOLDING = 0.1,
 #                     BATCH_SIZE_ORDERS=10, SIM_DURATION=200, action_space=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
