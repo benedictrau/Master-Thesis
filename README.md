@@ -151,15 +151,25 @@ The following scripts are stored in the folder "Reinforcement_Learning":
 
 The three scripts are able to train an agent for a given hyperparameter-set. The neural network is saved after training in the folder _**"results_NN"**_.
 
-###### Testing Hyperparameter
+###### Testing_Hyperparameter
+The sub-folder **Testing_Hyperparameter** contains all scripts used to conduct the hyperparameter testing. Thus, three more sub-folders are used for each POMDP approximator. Each of these folders contains the following three scripts:
+* **_"FactorScreening_**"POMDP Approximator Name"**_.py"_**:
+* _**"RS__**"POMDP Approximator Name"**_.py"_**:
+* _**"POMDP Approximator Name.py":**_
 
 
 <br><br>
 #### SimulationStudy
 In the folder _**"SimulationStudy"**_ all scripts required to conduct the simulation study are stored. The script _**"SimulationStudy.py"**_ is mainly responsible to conduct the simulation study, determine the transient times and calculate the number of simulation runs.
-* _det_transient_time()_:
-* _confidence_interval()_:
-* 
+* _det_transient_time()_: The function _det_transient_time_ is used to determine the transient time. Thus, the function creates the plot required for the graphical analysis.
+* _confidence_interval()_: This function is used to conduct the simulation study and plot the confidence intervals to compare the different policies.
+* _prerun()_: The function _prerun_ is used to determine the number of replications.
+<br>
+
+To get determine the actions to be taken according to the policies, three additional scripts exist:
+* _**"EOQ.py"**_: This script is used to determine the optimal replenishment quantity following the EOQ model.
+* _**"QR.py"**_: This script is used to determine the optimal replenishment quantity Q as well as the reorder point R following the (Q,R) model.
+* _**"RL_NN.py"**_: The _**"RL_NN.py"**_ script is used to determine the actions using the trained neural networks. For each POMDP approximator the trained network is loaded and the actions are determined.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -176,7 +186,7 @@ Distributed under the MIT License. See `LICENSE.md` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Benedict Rau - benedict.rau@email_client.com
+Benedict Rau - benedict.rau@gmx.de
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
