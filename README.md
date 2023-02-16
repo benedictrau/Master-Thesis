@@ -149,14 +149,17 @@ The following scripts are stored in the folder "Reinforcement_Learning":
 * _**QMDP.py**_: In this script a Reinforcement Learning agent can be trained using the POMDP approximator "QMDP".
 * _**DMC.py**_: In this script a Reinforcement Learning agent can be trained using the POMDP approximator "Dual Mode Control".
 
-The three scripts are able to train an agent for a given hyperparameter-set. The neural network is saved after training in the folder "xy".
+The three scripts are able to train an agent for a given hyperparameter-set. The neural network is saved after training in the folder _**"results_NN"**_.
 
 ###### Testing Hyperparameter
 
 
 <br><br>
 #### SimulationStudy
-
+In the folder _**"SimulationStudy"**_ all scripts required to conduct the simulation study are stored. The script _**"SimulationStudy.py"**_ is mainly responsible to conduct the simulation study, determine the transient times and calculate the number of simulation runs.
+* _det_transient_time()_:
+* _confidence_interval()_:
+* 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
