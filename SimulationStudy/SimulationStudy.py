@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages
 
 from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
 from EOQ import EOQ_Calculation
@@ -101,11 +99,12 @@ def plot_deviation_stock(run, system_stock, actual_stock, deviation, actions, ac
     ax.plot(run, system_stock, color="green", label="system stock")
     ax.plot(run, actual_stock, color="blue", label="actual stock")
     #plt.axis('equal')
-    ax.legend(frameon=True, loc="lower right")
+    ax.legend(frameon=True, loc="upper right")
 
     ax.set_xlabel("simulation time [time units]")
     ax.set_ylabel("inventory [SKU]")
-    ax.xlim(0, 200)
+    ax.set_xlim(0, 200)
+    ax.set_ylim(0, 100)
 
     ax1 = plt.subplot(212)
     ax2 = ax1.twinx()
@@ -115,11 +114,13 @@ def plot_deviation_stock(run, system_stock, actual_stock, deviation, actions, ac
     ax2.set_ylabel("action taken")
     ax2.scatter(actions_taken, actions, color="red", label="actions")
     ax2.set_ylim(0, 12)
-    ax2.legend()
-    ax1.legend()
-    ax1.xlim(0,200)
+    ax2.set_yticks([0, 2, 4, 6, 8, 10, 12])
+    ax1.set_ylim(0, 20)
+    ax2.legend(loc="upper right")
+    ax1.legend(loc="upper left")
+    ax1.set_xlim(0, 200)
 
-    plt.tight_layout()
+    plt.tight_layout(h_pad=3)
     plt.show()
 
 
@@ -297,7 +298,7 @@ def order_policy(mod, sim_dur, sim_episodes, neurons_per_layer, string, audit_fr
                 #print('------------------------')
                 clear_row = '\r' + ' ' * 79 + '\r'
                 print(clear_row, end='')
-                print(f'Run: {run}', end='')
+                print(f'Run: {run} / {sim_episodes}', end='')
                 #print(f'Total reward: {total_reward:4.1f}')
 
                 # Add sim results after one simulation run to the results lists
@@ -415,17 +416,26 @@ def one_run(mod, sim_dur, audit_frequency, sim_episodes, transient_time=0):
 
     mean_reward = result["reward"].mean()
     std_reward = result["reward"].std()
+    mean_satisfied_orders = result["satisfied_orders"].mean()
+    std_satisfied_orders = result["satisfied_orders"].std()
+    mean_satisfied_demand = result["satisfied_demand"].mean()
+    std_satisfied_demand = result["satisfied_demand"].std()
     print(result)
 
     print(f'mod: {mod}')
     print(f'mean reward: {mean_reward}')
     print(f'std reward: {std_reward}')
+    print(f'mean satisfied orders: {mean_satisfied_orders}')
+    print(f'std satisfied orders: {std_satisfied_orders}')
+    print(f'mean satisfied demand: {mean_satisfied_demand}')
+    print(f'std satisfied demand: {std_satisfied_demand}')
 
 
 
-#one_run(mod="EOQ",
-#        sim_dur=200,
-#        audit_frequency=14)
+one_run(mod="MLS",
+        sim_dur=200,
+        sim_episodes=1,
+        audit_frequency=250)
 
 
 # Plot the confidence interval
@@ -482,6 +492,16 @@ def confidence_interval():
 
         plot_confidence_interval(x=i+1, mean=result["reward"].mean(),
                                  sigma=result["reward"].std())
+
+
+        print(f'mean satisfied orders: {result["satisfied_orders"].mean()}')
+        print(f'std satisfied orders: {result["satisfied_orders"].std()}')
+        print(f'upper bound satisfied orders: {result["satisfied_orders"].mean()+1.96*result["satisfied_orders"].std()}')
+        print(f'lower bound satisfied orders: {result["satisfied_orders"].mean()-1.96*result["satisfied_orders"].std()}')
+        print(f'mean satisfied demand: {result["satisfied_demand"].mean()}')
+        print(f'std satisfied demand: {result["satisfied_demand"].std()}')
+        print(f'upper bound satisfied demand: {result["satisfied_demand"].mean() + 1.96 * result["satisfied_demand"].std()}')
+        print(f'lower bound satisfied demand: {result["satisfied_demand"].mean() - 1.96 * result["satisfied_demand"].std()}')
 
         run.append(i+1)
         if audit_frequency < 200:

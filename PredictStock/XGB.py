@@ -117,7 +117,9 @@ def HP_opt():
 
 
 def predict(x, y):
+
     loaded_rf = joblib.load("Results/XGB_optimized.joblib")
+    #loaded_rf = joblib.load("/Users/benedictrau/Desktop/Thesis_Stände/XGB_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     prediction = int(loaded_rf.predict(z))
     #print(f'prediction: {prediction}')
@@ -127,6 +129,7 @@ def predict(x, y):
 
 def class_probability(x, y):
     loaded_rf = joblib.load("Results/XGB_optimized.joblib")
+    #loaded_rf = joblib.load("/Users/benedictrau/Desktop/Thesis_Stände/XGB_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     class_probability = loaded_rf.predict_proba(z)
     #print(f'class_probability: {class_probability}')
@@ -136,5 +139,5 @@ def class_probability(x, y):
 #train()
 #HP_opt()
 
-#test = class_probability(52, 5)
-#print(test)
+test = class_probability(52, 5)
+print(test)
