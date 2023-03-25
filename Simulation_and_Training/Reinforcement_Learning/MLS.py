@@ -85,7 +85,8 @@ class DQN(nn.Module):
         self.action_space = action_space
 
         # NN with two hidden layers
-        # Sigmoid activation function
+        # LekyReLu activation function
+        # Dropout rate is used to avoid overfitting while training
         # nn.Linear means we have a linear transformation of the incoming data [nn.Linear(in_feature, out_feature)]
         super(DQN, self).__init__()
         self.net = nn.Sequential(
