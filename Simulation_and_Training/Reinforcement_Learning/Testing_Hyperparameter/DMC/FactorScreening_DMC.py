@@ -80,9 +80,7 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+
 def order_policy_eval(string, test_sim_dur, test_epochs, mod):
 
     global total_reward
@@ -103,7 +101,6 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod):
         deviation_direction=DEVIATION_DIRECTION
         )
 
-    ## 6.1 - Set up and start the training loop ##
     run = 0
     continue_learning = True
 
@@ -285,8 +282,7 @@ def get_default():
     test_sim_dur = 200
 
     # get benchmark
-    default_string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/" \
-                     "RL/Testing_Hyperparameter/DMC/results_NN_FS/default.pt"
+    default_string = "results_NN_FS/default.pt"
 
     print("------------------------")
     print("Default values")
@@ -362,8 +358,7 @@ def evaluation(mod, varied_parameter):
         print("Start Run: "+str(run))
         print(str(varied_parameter)+": "+str(i))
 
-        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
-                 "RL/Testing_Hyperparameter/DMC/results_NN_FS/"+str(mod)+"_"+str(varied_parameter)+\
+        string = "results_NN_FS/"+str(mod)+"_"+str(varied_parameter)+\
                  "_"+str(i)+".pt"
 
         order_policy(learning_rate = lr, gamma = gamma, train_sim_dur=train_sim_dur, threshold=threshold,

@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from SimulateAndLearn.Simulate.EOQ import EOQ_Calculation
@@ -33,9 +31,6 @@ DEVIATION_DIRECTION = 0.7
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
 
     global total_reward
@@ -93,7 +88,7 @@ def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
             global action
             step += 1
 
-            # order parts (MUSS NICHT IN JEDER ITERATION ABGERUFEN WERDEN, dann muss man aber audit anders implementieren)
+
             if mod == "EOQ":
                 if system_stock <= MEAN_DEMAND_SIZE:
                     action = EOQ_Calculation(COST_PER_ORDER=COST_PER_ORDER, COST_PER_ITEM= COST_PER_ITEM,

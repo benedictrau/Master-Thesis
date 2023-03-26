@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 from Sim_Env import InventorySystem
 
 import numpy as np
@@ -22,9 +20,8 @@ import time
 start_proc = time.time()
 
 
-###################################
-### 2 - Define Model Parameters ###
-###################################
+
+# Define Model Parameters #
 # Set whether to display on screen (slows model)
 DISPLAY_ON_SCREEN = False
 # Discount rate of future rewards
@@ -73,9 +70,8 @@ RESULT_NAME = 'MLS_FINAL_MODEL'
 
 
 
-######################
-### 3 - Define DQN ###
-######################
+
+# Define DQN #
 class DQN(nn.Module):
 
     def __init__(self, observation_space, action_space, neurons_per_layer=32):
@@ -123,9 +119,8 @@ class DQN(nn.Module):
         self.policy_net.load_state_dict(torch.load(path))
 
 
-###############################################
-### 4 - Define net policy training function ###
-###############################################
+
+# Define net policy training function #
 def optimize(policy_net, target_net, memory):
     # policy network to predict best action (= best Q)
     # target network to provide target of Q for the selected next action
@@ -203,9 +198,7 @@ def optimize(policy_net, target_net, memory):
     return step_MSE
 
 
-###############################
-### 5 - Define memory class ###
-###############################
+# Define memory class #
 class Memory():
     """
     Replay memory used to train model.
@@ -270,9 +263,8 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+
+# Define results plotting function #
 def order_policy():
 
     global total_reward

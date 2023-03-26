@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from SimulateAndLearn.Simulate.QR import QR_Calculation
@@ -33,9 +31,7 @@ DEVIATION_DIRECTION = 0.7
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+
 def order_policy_eval(mod, audit_frequency, sim_dur, episodes):
 
     global total_reward

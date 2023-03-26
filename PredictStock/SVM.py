@@ -121,4 +121,4 @@ def class_probability(x, y):
     class_probability = loaded_svm.predict_proba(z)
     return class_probability
 
-#print(predict(10, 10))
+#print(class_probability(10, 10))

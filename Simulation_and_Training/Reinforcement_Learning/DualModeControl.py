@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 from Sim_Env import InventorySystem
 
 import numpy as np
@@ -22,12 +20,8 @@ import time
 # To determine the time needed for training
 start_proc = time.time()
 
-### for HP tuning ###
-TUNED_PARAMETER = "lr"
 
-###################################
-### 2 - Define Model Parameters ###
-###################################
+# Define Model Parameters #
 # Set whether to display on screen (slows model)
 DISPLAY_ON_SCREEN = False
 # Discount rate of future rewards
@@ -80,9 +74,7 @@ RESULT_NAME = 'DMC'
 #np.random.seed(42)
 #torch.manual_seed(42)
 
-######################
-### 3 - Define DQN ###
-######################
+# Define NN
 class DQN(nn.Module):
 
     def __init__(self, observation_space, action_space, neurons_per_layer=64):
@@ -162,9 +154,8 @@ class DQN(nn.Module):
         self.policy_net.load_state_dict(torch.load(path))
 
 
-###############################################
-### 4 - Define net policy training function ###
-###############################################
+
+#Define net policy training function #
 def optimize(policy_net, target_net, memory):
     # policy network to predict best action (= best Q)
     # target network to provide target of Q for the selected next action
@@ -244,9 +235,7 @@ def optimize(policy_net, target_net, memory):
     return step_MSE
 
 
-###############################
-### 5 - Define memory class ###
-###############################
+# Define memory class #
 class Memory():
 
     """
@@ -265,9 +254,9 @@ class Memory():
         self.memory.append((state, action, reward, next_state, terminal, run))
 
 
-############################
-### 6 - Plot the results ###
-############################
+
+# Plot the results #
+
 def plot_results(run, exploration, score, MSE):
 
     # set up chart
@@ -310,9 +299,7 @@ def predict(system_stock, last_stock_count):
 
     return class_prob, prediction
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+# Order policy #
 def order_policy():
 
     global total_reward

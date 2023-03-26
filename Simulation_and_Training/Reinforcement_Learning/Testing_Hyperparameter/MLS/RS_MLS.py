@@ -1,8 +1,4 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from PredictStock import XGB
@@ -105,9 +101,6 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer):
 
     global total_reward
@@ -294,8 +287,7 @@ def evaluation(mod, iterations):
 
 
         # !!! Needs to be updated !!!
-        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
-                 "RL/Testing_Hyperparameter/MLS/results_NN_RS/"+str(mod)+\
+        string = "results_NN_RS/"+str(mod)+\
                  "_lr_"+str(learning_rate_choice)+\
                  "_gamma_"+str(gamma_choice)+\
                  "_batch_"+str(batch_size_choice)+\

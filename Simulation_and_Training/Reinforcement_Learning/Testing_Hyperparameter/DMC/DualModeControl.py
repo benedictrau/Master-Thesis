@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 
 import numpy as np
@@ -15,9 +13,7 @@ import torch.optim as optim
 from collections import deque
 
 
-###################################
-### 2 - Define Model Parameters ###
-###################################
+# Define Model Parameters #
 # Set whether to display on screen (slows model)
 DISPLAY_ON_SCREEN = False
 # Maximum number of game steps (state, action, reward, next state) to keep in memory
@@ -58,9 +54,8 @@ RESULT_NAME = 'DMC'
 
 
 
-######################
-### 3 - Define DQN ###
-######################
+
+# Define DQN #
 class DQN(nn.Module):
 
     def __init__(self, observation_space, action_space, dropout_rate,
@@ -132,9 +127,7 @@ class DQN(nn.Module):
         self.policy_net.load_state_dict(torch.load(path))
 
 
-###############################################
-### 4 - Define net policy training function ###
-###############################################
+
 def optimize(policy_net, target_net, memory, gamma, batch_size, exp_min, exp_decay):
     # policy network to predict best action (= best Q)
     # target network to provide target of Q for the selected next action
@@ -211,9 +204,8 @@ def optimize(policy_net, target_net, memory, gamma, batch_size, exp_min, exp_dec
     return step_MSE
 
 
-###############################
-### 5 - Define memory class ###
-###############################
+
+# Define memory class #
 class Memory():
 
     """
@@ -247,9 +239,8 @@ def predict(system_stock, last_stock_count):
 
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
+
+# Define results plotting function #
 def order_policy(learning_rate, gamma, train_sim_dur, train_epochs,  batch_size,
                  string, threshold=THRESHOLD, neurons_per_layer=32, dropout_rate=0.4,
                  exp_max=EXPLORATION_MAX, exp_min=EXPLORATION_MIN,
@@ -373,7 +364,6 @@ def order_policy(learning_rate, gamma, train_sim_dur, train_epochs,  batch_size,
             memory_state = memory_next_state
 
             # Update target net after a certain number of steps
-            ### FUNKTIONIERT DAS? ###
             if len(memory.memory) > replay_start_size:
                 #print(f'memory size: {len(memory.memory)}, ', end='')
 

@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 
 import numpy as np
@@ -20,9 +18,8 @@ import time
 # To determine the time needed for training
 start_proc = time.time()
 
-###################################
-### 2 - Define Model Parameters ###
-###################################
+
+# Define Model Parameters #
 # Set whether to display on screen (slows model)
 DISPLAY_ON_SCREEN = False
 # Maximum number of game steps (state, action, reward, next state) to keep in memory
@@ -62,9 +59,7 @@ RESULT_NAME = 'QMDP'
 
 
 
-######################
-### 3 - Define DQN ###
-######################
+# Define DQN #
 class DQN(nn.Module):
 
     def __init__(self, observation_space, action_space, dropout_rate,
@@ -111,7 +106,6 @@ class DQN(nn.Module):
                 pred = self.forward(torch.FloatTensor(tensor))
                 # get the best action assuming being in class x
                 predicted_action = np.argmax(pred.detach().numpy()[0])
-
                 best_q = pred[0][predicted_action].detach().item()
                 # weight the Q-value with the probability of being in class x
                 weighted_pred = best_q * class_prob[0][x].item()
@@ -134,9 +128,6 @@ class DQN(nn.Module):
         self.policy_net.load_state_dict(torch.load(path))
 
 
-###############################################
-### 4 - Define net policy training function ###
-###############################################
 def optimize(policy_net, target_net, memory, gamma, batch_size, exp_min, exp_decay):
     # policy network to predict best action (= best Q)
     # target network to provide target of Q for the selected next action
@@ -214,16 +205,8 @@ def optimize(policy_net, target_net, memory, gamma, batch_size, exp_min, exp_dec
     return step_MSE
 
 
-###############################
-### 5 - Define memory class ###
-###############################
+# Define memory class #
 class Memory():
-    """
-    Replay memory used to train model.
-    Limited length memory (using deque, double ended queue from collections).
-      - When memory full deque replaces the oldest data with newest.
-    Holds, state, action, reward, next state, and episode done.
-    """
 
     def __init__(self, memory_size):
         """Constructor method to initialise replay memory"""
@@ -234,9 +217,7 @@ class Memory():
         self.memory.append((state, action, reward, next_state, terminal))
 
 
-############################
-### 6 - Plot the results ###
-############################
+# Plot the results #
 def plot_results(run, exploration, score, MSE):
 
     # set up chart
@@ -275,14 +256,9 @@ def predict(system_stock, last_stock_count):
         class_prob = XGB.class_probability(system_stock, last_stock_count)
         prediction = XGB.predict(system_stock, last_stock_count)
 
-
-
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy(learning_rate, gamma, train_sim_dur, train_epochs,  batch_size,
                  string, neurons_per_layer=32, dropout_rate=0.4,
                  exp_max=EXPLORATION_MAX, exp_min=EXPLORATION_MIN,

@@ -9,7 +9,7 @@ import time
 import matplotlib.pyplot as plt
 
 
-# Set whether to display on screen (slows model)
+# Set whether to display on screen
 DISPLAY_ON_SCREEN = False
 # Time steps simulated in one step
 TIME_STEP = 1
@@ -50,7 +50,7 @@ def order_policy_eval(audit_frequency, sim_dur, episodes):
         deviation_direction=DEVIATION_DIRECTION
         )
 
-    ## 6.1 - Set up and start the training loop ##
+
     run = 0
     continue_learning = True
     all_actions = sim.actions

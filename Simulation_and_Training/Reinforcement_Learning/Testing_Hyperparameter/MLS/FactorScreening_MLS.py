@@ -1,8 +1,4 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from SimulateAndLearn.RL.Sim_Env import InventorySystem
 from PredictStock import XGB
@@ -104,9 +100,6 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer):
 
     global total_reward
@@ -300,8 +293,7 @@ def get_default():
     test_sim_dur = 200
 
     # get benchmark
-    default_string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/" \
-                     "RL/Testing_Hyperparameter/MLS/results_NN_FS/default.pt"
+    default_string = "results_NN_FS/default.pt"
 
     print("------------------------")
     print("Default values")
@@ -382,8 +374,7 @@ def evaluation(mod, varied_parameter):
         print("Start Run: "+str(run))
         print(str(varied_parameter)+": "+str(i))
 
-        string = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/"+\
-                 "RL/Testing_Hyperparameter/MLS/results_NN_FS/"+str(mod)+"_"+str(varied_parameter)+\
+        string = "results_NN_FS/"+str(mod)+"_"+str(varied_parameter)+\
                  "_"+str(i)+".pt"
 
         order_policy(learning_rate = lr, gamma = gamma, train_sim_dur=train_sim_dur,

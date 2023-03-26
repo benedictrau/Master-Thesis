@@ -1,8 +1,4 @@
-## PENDING PARTS REPLACED BY PENDING ORDERS [0,1]
-
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
 from PredictStock import XGB
@@ -105,9 +101,6 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer):
 
     global total_reward
@@ -159,8 +152,6 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod, neurons_per_layer)
 
 
         while True:
-
-
 
             action = get_action(class_prob, prediction, string, mod, neurons_per_layer)
             class_prob, prediction = predict(system_stock, last_stock_count)

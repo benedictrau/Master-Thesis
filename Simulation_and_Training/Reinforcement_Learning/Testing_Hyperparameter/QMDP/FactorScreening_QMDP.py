@@ -1,6 +1,4 @@
-###########################
-### 1 - Import packages ###
-###########################
+# Import packages #
 
 from Simulation_and_Training.Reinforcement_Learning.Sim_Env import InventorySystem
 from PredictStock import RF
@@ -93,9 +91,6 @@ def predict(system_stock, last_stock_count):
     return class_prob, prediction
 
 
-############################################
-### 6 - Define results plotting function ###
-############################################
 def order_policy_eval(string, test_sim_dur, test_epochs, mod):
 
     global total_reward
@@ -147,8 +142,6 @@ def order_policy_eval(string, test_sim_dur, test_epochs, mod):
 
 
         while True:
-
-
 
             action = get_action(class_prob, prediction, string, mod)
             class_prob, prediction = predict(system_stock, last_stock_count)
