@@ -8,7 +8,7 @@
 <h2 align="center">Evaluation of the Use of Reinforcement Learning in Retail Inventory Management</h2>
 
   <p align="center">
-    Master's thesis submitted on 27.03.2023 by Benedict Rau at the PSCM Department of TU Darmstadt
+    Master's thesis submitted on 26.03.2023 by Benedict Rau at the PSCM Department of TU Darmstadt
 
   </p>
 
