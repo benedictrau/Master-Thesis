@@ -111,7 +111,7 @@ In the following, an overview of the scripts used in the project is given based 
 
 #### Generate the data to train the classification models
 The folder _**"Predict_Stock"**_ contains all scripts and files used to generate the belief state. 
-The file _**"Main_predict_stock_createCSV.py"**_ was used to generate the data for training the classification models.
+The file _**"CreateCSV.py"**_ was used to generate the data for training the classification models.
 This script interacts with the reduced simulation model of the inventory system that can be found under the file name _**"Env_predict_stock.py"**_. <br>
 The generated .csv files are stored in the folder _**"Data"**_.
 <br><br>
