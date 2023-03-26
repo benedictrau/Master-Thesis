@@ -21,9 +21,6 @@ import time
 # To determine the time needed for training
 start_proc = time.time()
 
-### for HP tuning ###
-TUNED_PARAMETER = "lr"
-
 
 # Define Model Parameters #
 # Set whether to display on screen (slows model)
@@ -48,9 +45,9 @@ EXPLORATION_MIN = 0.001
 # Reduction in epsilon with each game step
 EXPLORATION_DECAY = 0.999
 # Simulation duration
-SIM_DURATION = 20
+SIM_DURATION = 200
 # Training episodes
-TRAINING_EPISODES = 5
+TRAINING_EPISODES = 100
 
 ### Simulation Parameter ###
 START_INVENTORY = 20
@@ -67,7 +64,7 @@ BATCH_SIZE_ORDERS = 20
 DEVIATION_DIRECTION = 0.7
 
 ### Prediction ###
-PREDICTOR = 'RF'
+PREDICTOR = 'XGB'
 
 ### Filename ###
 RESULT_NAME = 'QMDP'
@@ -274,7 +271,7 @@ def predict(system_stock, last_stock_count):
     if PREDICTOR == 'RF':
         class_prob = RF.class_probability(system_stock, last_stock_count)
         prediction = RF.predict(system_stock, last_stock_count)
-    elif PREDICTOR == 'XGBoost':
+    elif PREDICTOR == 'XGB':
         class_prob = XGB.class_probability(system_stock, last_stock_count)
         prediction = XGB.predict(system_stock, last_stock_count)
     elif PREDICTOR == "SVM":
@@ -485,10 +482,9 @@ def order_policy():
     # Display the plots
     plot_results(results_run, results_exploration, results_score, results_avg_MSE)
     # Save the model
-    torch.save(policy_net.state_dict(), 'results_NN_RS/' + RESULT_NAME + '.pt')
-    # Safe dataframe as an excel file (only needed for hyperparameter optimization
-    sim_details.to_excel("Results_Excel/" + RESULT_NAME + "_" + TUNED_PARAMETER
-                         + "_" + str(LEARNING_RATE) +".xlsx", sheet_name="Results")
+    torch.save(policy_net.state_dict(), 'results_NN/' + RESULT_NAME + '.pt')
+    # Safe dataframe as an excel file (only needed for hyperparameter optimization)
+    sim_details.to_excel("Results_Excel/" + RESULT_NAME +".xlsx", sheet_name="Results")
 
 # Run model and return last run results by day
 last_run = order_policy()

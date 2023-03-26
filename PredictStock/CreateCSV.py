@@ -41,7 +41,6 @@ def CreateCSV():
         deviation_direction = DEVIATION_DIRECTION
         )
 
-    ## 6.1 - Set up and start the training loop ##
     run = 0
     all_steps = 0
     continue_learning = True
@@ -123,4 +122,4 @@ def CreateCSV():
 
 
 # Run model and return last run results by day
-last_run = CreateCSV()
+run = CreateCSV()

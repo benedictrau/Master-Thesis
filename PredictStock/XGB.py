@@ -9,6 +9,7 @@ from imblearn.under_sampling import RandomUnderSampler
 import xgboost as xgb
 import time
 
+### ABSOLUTER PFAD MUSS ANGEPASST WERDEN IN DEN BEIDEN LETZTEN FUNKTIONEN ###
 
 def train():
     start_proc = time.time()
@@ -114,11 +115,10 @@ def HP_opt():
     print('Required time: {:5.3f}s'.format(end_proc - start_proc))
 
 
-
-
 def predict(x, y):
 
-    loaded_rf = joblib.load("Results/XGB_optimized.joblib")
+    ## ABSOLUTE PATH ##
+    loaded_rf = joblib.load("/Users/benedictrau/Documents/GitHub/Master-Thesis/PredictStock/Results/XGB_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     prediction = int(loaded_rf.predict(z))
     #print(f'prediction: {prediction}')
@@ -127,15 +127,17 @@ def predict(x, y):
 
 
 def class_probability(x, y):
-    loaded_rf = joblib.load("Results/XGB_optimized.joblib")
+
+    ## ABSOLUTE PATH ##
+    loaded_rf = joblib.load("/Users/benedictrau/Documents/GitHub/Master-Thesis/PredictStock/Results/XGB_optimized.joblib")
     z = np.array([[x, y]], dtype=object)
     class_probability = loaded_rf.predict_proba(z)
     #print(f'class_probability: {class_probability}')
     return class_probability
 
+#test = class_probability(52, 5)
+#print(test)
 
 #train()
 #HP_opt()
 
-#test = class_probability(52, 5)
-#print(test)

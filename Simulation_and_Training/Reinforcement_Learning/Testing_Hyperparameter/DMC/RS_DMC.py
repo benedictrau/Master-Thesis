@@ -261,9 +261,9 @@ def evaluation(mod, iterations):
         threshold_list = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
         # Train and Test Episodes and Simulation duration
-        train_epochs = 10
+        train_epochs = 50
         train_sim_dur = 100
-        test_epochs = 10
+        test_epochs = 20
         test_sim_dur = 200
 
         # Chose the parameters randomly out of the lists
@@ -347,7 +347,7 @@ def evaluation(mod, iterations):
     total_results['sigma_reward_training'] = total_results_sigma_reward
     total_results['avg_reward_training'] = total_results_average_reward
 
-    total_results.to_excel("results_NN_FS/Results_" + str(run) + ".xlsx", sheet_name="Results")
+    total_results.to_excel("results_NN_RS/Results_" + str(run) + ".xlsx", sheet_name="Results")
 
     print("------------------------")
     print("RESULTS")
@@ -369,7 +369,7 @@ def evaluation(mod, iterations):
 
 start_proc = time.process_time()
 
-run = evaluation(mod="DMC", iterations=1)
+run = evaluation(mod="DMC", iterations=2)
 
 end_proc = time.process_time()
 print('Required time: {:5.3f}s'.format(end_proc-start_proc))

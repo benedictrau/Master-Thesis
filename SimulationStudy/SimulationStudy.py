@@ -15,6 +15,7 @@ DISPLAY_ON_SCREEN = False
 # Time step between actions
 TIME_STEP = 1
 
+### ABSOLUTER PFAD MUSS ANGEPASST WERDEN IN DER FUNKTION GET STRING ###
 
 ### Simulation Parameter ###
 START_INVENTORY = 20
@@ -354,18 +355,18 @@ def get_string(mod):
 
     if mod == "MLS":
         neurons_per_layer = 64
-        #string_RL = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/RL/Testing_Hyperparameter/MLS/results_NN_Eva/MLS_lr_0.001_gamma_0.95_batch_16_exp_min_0.01_exp_decay_0.995.pt"
-        string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/MLS_lr_0.0006000000000000001_gamma_0.9545454545454546_batch_128_replay_2000.0_dropout_0.2_neurons_64.pt"
+        string_RL = "/Users/benedictrau/Documents/GitHub/Master-Thesis/Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/MLS_lr_0.0006000000000000001_gamma_0.9545454545454546_batch_128_replay_2000.0_dropout_0.2_neurons_64.pt"
+        #string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/MLS_lr_0.0006000000000000001_gamma_0.9545454545454546_batch_128_replay_2000.0_dropout_0.2_neurons_64.pt"
 
     elif mod == "QMDP":
         neurons_per_layer = 128
-        #string_RL = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/RL/results_NN/QMDP_lr_0.0007000000000000001_gamma_0.8836363636363636_batch_16_replay_1000.0_dropout_0.3_neurons_128.pt"
-        string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/QMDP_lr_0.0007000000000000001_gamma_0.8836363636363636_batch_16_replay_1000.0_dropout_0.3_neurons_128.pt"
+        string_RL = "/Users/benedictrau/Documents/GitHub/Master-Thesis/Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/QMDP_lr_0.0007000000000000001_gamma_0.8836363636363636_batch_16_replay_1000.0_dropout_0.3_neurons_128.pt"
+        #string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/QMDP_lr_0.0007000000000000001_gamma_0.8836363636363636_batch_16_replay_1000.0_dropout_0.3_neurons_128.pt"
 
     elif mod == "DMC":
         neurons_per_layer = 64
-        #string_RL = "/Users/benedictrau/Documents/GitHub/Masterarbeit/SimulateAndLearn/RL/results_NN/DMC_lr_0.00030000000000000003_gamma_0.99_batch_64_replay_2000.0_dropout_0.2_neurons_64_threshold_0.3.pt"
-        string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/DMC_lr_0.00030000000000000003_gamma_0.99_batch_64_replay_2000.0_dropout_0.2_neurons_64_threshold_0.3.pt"
+        string_RL = "/Users/benedictrau/Documents/GitHub/Master-Thesis/Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/DMC_lr_0.00030000000000000003_gamma_0.99_batch_64_replay_2000.0_dropout_0.2_neurons_64_threshold_0.3.pt"
+        #string_RL = "Simulation_and_Training/Reinforcement_Learning/NeuralNetwork/DMC_lr_0.00030000000000000003_gamma_0.99_batch_64_replay_2000.0_dropout_0.2_neurons_64_threshold_0.3.pt"
 
     else:
         neurons_per_layer = 0
@@ -382,11 +383,11 @@ def det_transient_time(mod, sim_dur, sim_episodes, audit_frequency, window):
     order_policy(mod, sim_dur, sim_episodes, neurons_per_layer=neurons_per_layer, string=string_RL,
                  audit_frequency=audit_frequency, plot_transient = True, window=window, plot_action=False)
 
-det_transient_time(mod="DMC",
-                   sim_dur=200,
-                   sim_episodes=10,
-                   audit_frequency=203,
-                   window = 100)
+#det_transient_time(mod="DMC",
+#                   sim_dur=200,
+#                   sim_episodes=10,
+#                   audit_frequency=203,
+#                   window = 100)
 
 
 
@@ -399,8 +400,8 @@ def plot_deviation_inventory(mod, sim_dur, sim_episodes=1, audit_frequency=200):
     order_policy(mod, sim_dur, sim_episodes=1, neurons_per_layer=neurons_per_layer, string=string_RL,
                  audit_frequency = audit_frequency, plot_dev_stock = True)
 
-#plot_deviation_inventory(mod="EOQ",
-#                        sim_dur = 200,
+#plot_deviation_inventory(mod="QMDP",
+#                        sim_dur = 20,
 #                        audit_frequency=200)
 
 

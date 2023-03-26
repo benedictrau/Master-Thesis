@@ -335,7 +335,7 @@ def evaluation(mod, iterations):
     total_results['sigma_reward_training'] = total_results_sigma_reward
     total_results['avg_reward_training'] = total_results_average_reward
 
-    total_results.to_excel("results_NN_FS/Results_" + str(run) + ".xlsx", sheet_name="Results")
+    total_results.to_excel("results_NN_RS/Results_" + str(run) + ".xlsx", sheet_name="Results")
 
     print("------------------------")
     print("RESULTS")

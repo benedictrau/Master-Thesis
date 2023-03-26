@@ -44,9 +44,9 @@ EXPLORATION_MIN = 0.1
 # Reduction in epsilon with each game step
 EXPLORATION_DECAY = 0.99
 # Simulation duration
-SIM_DURATION = 100
+SIM_DURATION = 200
 # Training episodes
-TRAINING_EPISODES = 50
+TRAINING_EPISODES = 100
 
 ### Simulation Parameter ###
 START_INVENTORY = 20
@@ -66,7 +66,7 @@ DEVIATION_DIRECTION = 0.7
 PREDICTOR = 'XGB'
 
 ### Filename ###
-RESULT_NAME = 'MLS_FINAL_MODEL'
+RESULT_NAME = 'MLS'
 
 
 

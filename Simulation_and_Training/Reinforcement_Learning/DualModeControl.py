@@ -46,7 +46,7 @@ EXPLORATION_DECAY = 0.999
 # Simulation duration
 SIM_DURATION = 200
 # Training episodes
-TRAINING_EPISODES = 40
+TRAINING_EPISODES = 100
 # Threshold to decide whether an action should be performed in order to maximize the reward or to reduce uncertainty
 THRESHOLD = 0.5
 
